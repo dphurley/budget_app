@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ 	return __webpack_require__(__webpack_require__.s = 6);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -73,12 +73,81 @@
 "use strict";
 
 
-var angular = __webpack_require__(2);
+CreditsController.$inject = ['$http'];
+
+function CreditsController($http) {
+
+    var vm = this;
+
+    vm.creditEntries = [{
+        amount: 123,
+        note: 123,
+        createdAt: 123
+    }, {
+        amount: 456,
+        note: 456,
+        createdAt: 456
+    }];
+
+    /**
+     * 
+     *  NEED TO READ ALL OF THE CREDIT ENTRIES FROM THE DB WHEN PAGE LOADS
+     * 
+     */
+
+    vm.addCredit = function () {
+
+        // make an ajax call to save the new Credit to the database
+
+        // only push to the creditEntries array if the ajax call is successful
+
+        vm.creditEntries.push({
+            amount: vm.newCreditAmount,
+            note: vm.newCreditNote,
+            createdAt: new Date()
+        });
+
+        resetForm();
+    };
+
+    function resetForm() {
+        vm.newCreditAmount = '';
+        vm.newCreditNote = '';
+    }
+}
+
+module.exports = CreditsController;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var angular = __webpack_require__(4);
 
 angular.module('BudgetApp', []);
 
 /***/ }),
-/* 1 */
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var creditsTemplate = __webpack_require__(5);
+var creditsController = __webpack_require__(0);
+
+var CreditsComponent = {
+    template: creditsTemplate,
+    controller: creditsController
+};
+
+angular.module('BudgetApp').component('credits', CreditsComponent);
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports) {
 
 /**
@@ -33455,17 +33524,25 @@ $provide.value("$locale", {
 !window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
 
 /***/ }),
-/* 2 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(1);
+__webpack_require__(3);
 module.exports = angular;
 
 
 /***/ }),
-/* 3 */
+/* 5 */
+/***/ (function(module, exports) {
+
+module.exports = "<div>\n\n    <h1>CREDIT PAGE</h1>\n\n    <form ng-submit=\"$ctrl.addCredit()\">\n        <div>add $<input type=\"text\" ng-model=\"$ctrl.newCreditAmount\"></div>\n        <div>NOTE: <input type=\"text\" ng-model=\"$ctrl.newCreditNote\"></div>\n        <div><input type=\"submit\" value=\"Add to Credits\"></div>\n    </form>\n\n    <h3>Total Credit</h3>\n    <h3>$515</h3>\n\n    <table>\n        <tr ng-repeat=\"creditEntry in $ctrl.creditEntries\">\n            <td>{{creditEntry.amount}}</td>\n            <td>{{creditEntry.note}}</td>\n            <td>{{creditEntry.createdAt}}</td>\n        </tr>\n    </table>\n\n</div>";
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
+__webpack_require__(1);
+__webpack_require__(2);
 module.exports = __webpack_require__(0);
 
 
