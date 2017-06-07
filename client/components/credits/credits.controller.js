@@ -77,7 +77,6 @@ function CreditsController($http, $state, $stateParams, CreditsService) {
     }
 
     vm.showCredit = function (creditId) {
-        console.log(creditId);
         $state.go('show_credit/:creditId', { creditId: creditId });
     }
 

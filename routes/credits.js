@@ -20,6 +20,21 @@ router.get('/', (request, response) => {
 
 })
 
+router.get('/:creditId', function (request, response) {
+
+    const creditIdToShow = request.params.creditId;
+
+    Credit.findById(creditIdToShow, function (error, foundCredit) {
+        if (error) {
+            console.log('Error finding Credit with ID of ' + creditIdToShow);
+            return;
+        }
+
+        response.send(foundCredit);
+    });
+
+});
+
 router.post('/', (request, response) => {
 
     // grab the new Credit info from the request
@@ -44,19 +59,23 @@ router.post('/', (request, response) => {
     });
 });
 
-router.get('/:creditId', function (request, response) {
+router.patch('/', function (request, response) {
 
-    const creditIdToShow = request.params.creditId;
+    let creditToUpdate = request.body;
 
-    Credit.findById(creditIdToShow, function (error, foundCredit) {
-        if (error) {
-            console.log('Error finding Credit with ID of ' + creditIdToShow);
-            return;
-        }
+    console.log(creditToUpdate);
 
-        response.send(foundCredit);
-    });
+    Credit.findByIdAndUpdate(creditToUpdate._id, creditToUpdate, { new: true })
+        .exec(function (error, updatedCredit) {
 
+            if (error) {
+                console.log("Error while updating Credit with ID of " + creditToUpdate.id);
+                return;
+            }
+
+            response.send(200);
+
+        });
 });
 
 router.delete('/:creditId', function (request, response) {

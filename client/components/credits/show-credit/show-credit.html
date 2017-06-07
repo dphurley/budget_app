@@ -2,5 +2,5 @@
     <div>Amount: {{$ctrl.creditEntry.amount}}</div>
     <div>Note: {{$ctrl.creditEntry.note}}</div>
     <div>Created At: {{$ctrl.creditEntry.createdAt}}</div>
-    <button ng-click="$ctrl.editCreditEntry()">Edit</button>
+    <button ng-click="$ctrl.editCreditEntry($ctrl.creditEntry._id)">Edit</button>
 </div>

@@ -6,10 +6,6 @@ angular.module('BudgetApp', ['ui.router']).config(uiRouterSetup);
 uiRouterSetup.$inject = ['$stateProvider', '$urlRouterProvider'];
 function uiRouterSetup($stateProvider, $urlRouterProvider) {
     $stateProvider
-        .state('home', {
-            url: '/',
-            template: '<a ui-sref="credits">credits</a>'
-        })
         .state('credits', {
             url: '/credits',
             template: '<credits></credits>'
@@ -18,7 +14,12 @@ function uiRouterSetup($stateProvider, $urlRouterProvider) {
             url: '/show_credit/:creditId',
             params: [ 'creditId' ],
             template: '<show-credit></show-credit>'
-        });
+        })
+        .state('edit_credit/:creditId', {
+            url: '/edit_credit/:creditId',
+            params: [ 'creditId' ],
+            template: '<edit-credit></edit-credit>'
+        });;
 
     $urlRouterProvider.otherwise('/');
 
