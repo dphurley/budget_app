@@ -44706,7 +44706,7 @@ module.exports = "<div>\n\n    <h1>CREDITS</h1>\n\n    <form ng-submit=\"$ctrl.a
 /* 97 */
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n    <form ng-submit=\"$ctrl.updateCreditInformation($ctrl.creditToUpdate._id)\">\n        <div>Amount: <input type=\"number\" ng-model=\"$ctrl.creditToUpdate.amount\"></div>\n        <div>Note: <input type=\"text\" ng-model=\"$ctrl.creditToUpdate.note\"></div>\n        <div><input type=\"submit\" value=\"Update Credit Entry\"></div>\n    </form>\n</div>";
+module.exports = "<div>\n    <form ng-submit=\"$ctrl.updateCreditInformation($ctrl.creditToUpdate._id)\">\n        <div>Amount: <input type=\"number\" ng-model=\"$ctrl.creditToUpdate.amount\"></div>\n        <div>Note: <input type=\"text\" ng-model=\"$ctrl.creditToUpdate.note\"></div>\n        <div>Created At: {{$ctrl.creditToUpdate.createdAt}}</div>\n        <div><input type=\"submit\" value=\"Update Credit Entry\"></div>\n    </form>\n</div>";
 
 /***/ }),
 /* 98 */
