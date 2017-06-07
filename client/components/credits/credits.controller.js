@@ -1,6 +1,6 @@
-CreditsController.$inject = ['$http'];
+CreditsController.$inject = ['$http', 'CreditsService'];
 
-function CreditsController($http) {
+function CreditsController($http, CreditsService) {
 
     let vm = this;
 
@@ -11,19 +11,23 @@ function CreditsController($http) {
      * from the database.
      */
     function initialize() {
-        getCreditsFromDatabase();
+        getAllCreditsFromDatabase();
     }
     initialize();
 
-    function getCreditsFromDatabase() {
-        $http.get('/credits').then(
-            function success(response) {
-                vm.creditEntries = response.data;
-            },
-            function failure(response) {
-                console.log('Error retrieving Credit Entries from database!');
-            }
-        );
+    // this function grabs all of the credits from the database
+    // via an AJAX call
+    function getAllCreditsFromDatabase() {
+        CreditsService.getAllCreditsFromDatabase()
+            .then(
+                function success(response) {
+                    // if the call is successful, return the list of credits
+                    vm.creditEntries = response.data;
+                },
+                function failure(response) {
+                    console.log('Error retrieving Credit Entries from database!');
+                }
+            );
     }
 
     // This function handles our form submission.
@@ -36,12 +40,11 @@ function CreditsController($http) {
         };
 
         // Make an ajax call to save the new Credit to the database:
-        $http.post('http://localhost:3000/credits', newCredit)
+        CreditsService.addNewCreditToDatabase(newCredit)
             .then(
                 function success(response) {
                     // only push to the creditEntries array if the ajax call is successful
                     const newCreditFromDatabase = response.data;
-                    console.log(response.data);
                     vm.creditEntries.push(newCreditFromDatabase);
                     // then reset the form so we can submit more credits
                     resetForm();

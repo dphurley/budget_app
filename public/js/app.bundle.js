@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 6);
+/******/ 	return __webpack_require__(__webpack_require__.s = 7);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -73,9 +73,9 @@
 "use strict";
 
 
-CreditsController.$inject = ['$http'];
+CreditsController.$inject = ['$http', 'CreditsService'];
 
-function CreditsController($http) {
+function CreditsController($http, CreditsService) {
 
     var vm = this;
 
@@ -86,12 +86,15 @@ function CreditsController($http) {
      * from the database.
      */
     function initialize() {
-        getCreditsFromDatabase();
+        getAllCreditsFromDatabase();
     }
     initialize();
 
-    function getCreditsFromDatabase() {
-        $http.get('/credits').then(function success(response) {
+    // this function grabs all of the credits from the database
+    // via an AJAX call
+    function getAllCreditsFromDatabase() {
+        CreditsService.getAllCreditsFromDatabase().then(function success(response) {
+            // if the call is successful, return the list of credits
             vm.creditEntries = response.data;
         }, function failure(response) {
             console.log('Error retrieving Credit Entries from database!');
@@ -108,10 +111,9 @@ function CreditsController($http) {
         };
 
         // Make an ajax call to save the new Credit to the database:
-        $http.post('http://localhost:3000/credits', newCredit).then(function success(response) {
+        CreditsService.addNewCreditToDatabase(newCredit).then(function success(response) {
             // only push to the creditEntries array if the ajax call is successful
             var newCreditFromDatabase = response.data;
-            console.log(response.data);
             vm.creditEntries.push(newCreditFromDatabase);
             // then reset the form so we can submit more credits
             resetForm();
@@ -139,7 +141,7 @@ module.exports = CreditsController;
 "use strict";
 
 
-var angular = __webpack_require__(4);
+var angular = __webpack_require__(5);
 
 angular.module('BudgetApp', []);
 
@@ -150,7 +152,7 @@ angular.module('BudgetApp', []);
 "use strict";
 
 
-var creditsTemplate = __webpack_require__(5);
+var creditsTemplate = __webpack_require__(6);
 var creditsController = __webpack_require__(0);
 
 var CreditsComponent = {
@@ -162,6 +164,29 @@ angular.module('BudgetApp').component('credits', CreditsComponent);
 
 /***/ }),
 /* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+CreditsService.$inject = ['$http'];
+
+function CreditsService($http) {
+    var self = this;
+
+    self.getAllCreditsFromDatabase = function () {
+        return $http.get('/credits');
+    };
+
+    self.addNewCreditToDatabase = function (newCredit) {
+        return $http.post('http://localhost:3000/credits', newCredit);
+    };
+}
+
+angular.module('BudgetApp').service('CreditsService', CreditsService);
+
+/***/ }),
+/* 4 */
 /***/ (function(module, exports) {
 
 /**
@@ -33538,26 +33563,27 @@ $provide.value("$locale", {
 !window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(3);
+__webpack_require__(4);
 module.exports = angular;
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports) {
 
 module.exports = "<div>\n\n    <h1>CREDIT PAGE</h1>\n\n    <form ng-submit=\"$ctrl.addCredit()\">\n        <div>add $<input type=\"text\" ng-model=\"$ctrl.newCreditAmount\"></div>\n        <div>NOTE: <input type=\"text\" ng-model=\"$ctrl.newCreditNote\"></div>\n        <div><input type=\"submit\" value=\"Add to Credits\"></div>\n    </form>\n\n    <h3>Total Credit</h3>\n    <h3>$515</h3>\n\n    <table>\n        <tr ng-repeat=\"creditEntry in $ctrl.creditEntries\">\n            <td>{{ creditEntry.amount | currency }}</td>\n            <td>{{ creditEntry.note}}</td>\n            <td>{{ creditEntry.createdAt | date : 'medium' }}</td>\n        </tr>\n    </table>\n\n</div>";
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(1);
 __webpack_require__(2);
-module.exports = __webpack_require__(0);
+__webpack_require__(0);
+module.exports = __webpack_require__(3);
 
 
 /***/ })

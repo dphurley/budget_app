@@ -13,7 +13,8 @@ router.get('/', (request, response) => {
             return;
         }
 
-        // if there are no errors, send the credits back as JSON        
+        // if there are no errors, send the credits back as JSON    
+        console.log(credits);    
         response.send(credits);
     })
 
