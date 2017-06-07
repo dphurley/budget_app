@@ -44,6 +44,21 @@ router.post('/', (request, response) => {
     });
 });
 
+router.get('/:creditId', function (request, response) {
+
+    const creditIdToShow = request.params.creditId;
+
+    Credit.findById(creditIdToShow, function (error, foundCredit) {
+        if (error) {
+            console.log('Error finding Credit with ID of ' + creditIdToShow);
+            return;
+        }
+
+        response.send(foundCredit);
+    });
+
+});
+
 router.delete('/:creditId', function (request, response) {
 
     const creditIdToDelete = request.params.creditId;
@@ -59,5 +74,7 @@ router.delete('/:creditId', function (request, response) {
     })
 
 });
+
+
 
 module.exports = router;

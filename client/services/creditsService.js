@@ -14,6 +14,10 @@ function CreditsService($http) {
     self.deleteIdFromDatabase = function (creditIdToDeleteFromDatabase) {
         return $http.delete('/credits/' + creditIdToDeleteFromDatabase);
     }
+
+    self.getSingleCreditById = function (creditIdToShow) {
+        return $http.get('credits/' + creditIdToShow)
+    }
 }
 
 angular

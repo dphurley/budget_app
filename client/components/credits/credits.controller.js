@@ -1,6 +1,6 @@
-CreditsController.$inject = ['$http', 'CreditsService'];
+CreditsController.$inject = ['$http', '$state', '$stateParams', 'CreditsService'];
 
-function CreditsController($http, CreditsService) {
+function CreditsController($http, $state, $stateParams, CreditsService) {
 
     let vm = this;
 
@@ -74,6 +74,11 @@ function CreditsController($http, CreditsService) {
                 }
             )
 
+    }
+
+    vm.showCredit = function (creditId) {
+        console.log(creditId);
+        $state.go('show_credit/:creditId', { creditId: creditId });
     }
 
     // this function can be used to clear the credits form
