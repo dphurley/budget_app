@@ -20,13 +20,13 @@ function CreditsController($http, CreditsService) {
     function getAllCreditsFromDatabase() {
         CreditsService.getAllCreditsFromDatabase()
             .then(
-                function success(response) {
-                    // if the call is successful, return the list of credits
-                    vm.creditEntries = response.data;
-                },
-                function failure(response) {
-                    console.log('Error retrieving Credit Entries from database!');
-                }
+            function success(response) {
+                // if the call is successful, return the list of credits
+                vm.creditEntries = response.data;
+            },
+            function failure(response) {
+                console.log('Error retrieving Credit Entries from database!');
+            }
             );
     }
 
@@ -56,6 +56,25 @@ function CreditsController($http, CreditsService) {
                     console.log('Error saving new Credit to database!');
                 }
             )
+    }
+
+    vm.deleteCredit = function (creditIndexToDelete, creditIdToDeleteFromDatabase) {
+
+        CreditsService.deleteIdFromDatabase(creditIdToDeleteFromDatabase)
+            .then(
+                function success(response) {
+                    // only delete the Credit from the Angular array if 
+                    // it was successfully deleted from the database
+                    vm.creditEntries.splice(creditIndexToDelete, 1);
+                },
+                function failure(response) {
+
+                    // DO NOT delete the Credit from the Angular array if the
+                    // credit is not successfully deleted from the database
+                    console.log('Error deleting Credit with ID of ' + creditIdToDeleteFromDatabase);
+                }
+            )
+        
     }
 
     // this function can be used to clear the credits form

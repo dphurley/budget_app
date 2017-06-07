@@ -125,6 +125,20 @@ function CreditsController($http, CreditsService) {
         });
     };
 
+    vm.deleteCredit = function (creditIndexToDelete, creditIdToDeleteFromDatabase) {
+
+        CreditsService.deleteIdFromDatabase(creditIdToDeleteFromDatabase).then(function success(response) {
+            // only delete the Credit from the Angular array if 
+            // it was successfully deleted from the database
+            vm.creditEntries.splice(creditIndexToDelete, 1);
+        }, function failure(response) {
+
+            // DO NOT delete the Credit from the Angular array if the
+            // credit is not successfully deleted from the database
+            console.log('Error deleting Credit with ID of ' + creditIdToDeleteFromDatabase);
+        });
+    };
+
     // this function can be used to clear the credits form
     function resetForm() {
         vm.newCreditAmount = '';
@@ -180,6 +194,10 @@ function CreditsService($http) {
 
     self.addNewCreditToDatabase = function (newCredit) {
         return $http.post('http://localhost:3000/credits', newCredit);
+    };
+
+    self.deleteIdFromDatabase = function (creditIdToDeleteFromDatabase) {
+        return $http.delete('http://localhost:3000/credits/' + creditIdToDeleteFromDatabase);
     };
 }
 
@@ -33574,7 +33592,7 @@ module.exports = angular;
 /* 6 */
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n\n    <h1>CREDIT PAGE</h1>\n\n    <form ng-submit=\"$ctrl.addCredit()\">\n        <div>add $<input type=\"text\" ng-model=\"$ctrl.newCreditAmount\"></div>\n        <div>NOTE: <input type=\"text\" ng-model=\"$ctrl.newCreditNote\"></div>\n        <div><input type=\"submit\" value=\"Add to Credits\"></div>\n    </form>\n\n    <h3>Total Credit</h3>\n    <h3>$515</h3>\n\n    <table>\n        <tr ng-repeat=\"creditEntry in $ctrl.creditEntries\">\n            <td>{{ creditEntry.amount | currency }}</td>\n            <td>{{ creditEntry.note}}</td>\n            <td>{{ creditEntry.createdAt | date : 'medium' }}</td>\n        </tr>\n    </table>\n\n</div>";
+module.exports = "<div>\n\n    <h1>CREDIT PAGE</h1>\n\n    <form ng-submit=\"$ctrl.addCredit()\">\n        <div>add $<input type=\"text\" ng-model=\"$ctrl.newCreditAmount\"></div>\n        <div>NOTE: <input type=\"text\" ng-model=\"$ctrl.newCreditNote\"></div>\n        <div><input type=\"submit\" value=\"Add to Credits\"></div>\n    </form>\n\n    <h3>Total Credit</h3>\n    <h3>$515</h3>\n\n    <table>\n        <tr ng-repeat=\"creditEntry in $ctrl.creditEntries\">\n            <td>{{ creditEntry.amount | currency }}</td>\n            <td>{{ creditEntry.note}}</td>\n            <td>{{ creditEntry.createdAt | date : 'medium' }}</td>\n            \n            <!-- when the delete button is clicked, tell Angular what index in the array to delete -->\n            <!-- and also what the id of the credit is so we can delete it from the database -->\n            <td><button ng-click=\"$ctrl.deleteCredit($index, creditEntry._id)\">Delete</button></td>\n        </tr>\n    </table>\n\n</div>";
 
 /***/ }),
 /* 7 */
