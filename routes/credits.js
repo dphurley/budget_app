@@ -7,14 +7,14 @@ router.get('/', (request, response) => {
 
     // Find all of the Credits from the database
     Credit.find({}).exec(function (error, credits) {
-        if(error) {
+        if (error) {
             console.log('Error retrieving credits!');
             console.log('Error: ' + error);
             return;
         }
 
         // if there are no errors, send the credits back as JSON    
-        console.log(credits);    
+        console.log(credits);
         response.send(credits);
     })
 
@@ -24,7 +24,7 @@ router.post('/', (request, response) => {
 
     // grab the new Credit info from the request
     let creditFromRequest = request.body;
-    
+
     // then build a new Credit model with the info
     // REMEMBER: the new Date will be created by the database
     let newCredit = new Credit({
@@ -42,6 +42,22 @@ router.post('/', (request, response) => {
         // once the new credit has been saved, return it to the client
         response.send(newCredit);
     });
-})
+});
+
+router.delete('/:creditId', function (request, response) {
+
+    const creditIdToDelete = request.params.creditId;
+
+    Credit.findByIdAndRemove(creditIdToDelete).exec(function (error) {
+        if (error) {
+            console.log("Error while deleting Credit with ID of " + creditIdToDelete);
+            return;
+        }
+
+        // once the credit has been deleted, tell the server everything was successful
+        response.sendStatus(200);
+    })
+
+});
 
 module.exports = router;

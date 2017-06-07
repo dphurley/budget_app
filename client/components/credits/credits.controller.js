@@ -68,13 +68,12 @@ function CreditsController($http, CreditsService) {
                     vm.creditEntries.splice(creditIndexToDelete, 1);
                 },
                 function failure(response) {
-
                     // DO NOT delete the Credit from the Angular array if the
                     // credit is not successfully deleted from the database
                     console.log('Error deleting Credit with ID of ' + creditIdToDeleteFromDatabase);
                 }
             )
-        
+
     }
 
     // this function can be used to clear the credits form

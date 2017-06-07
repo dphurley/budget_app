@@ -132,7 +132,6 @@ function CreditsController($http, CreditsService) {
             // it was successfully deleted from the database
             vm.creditEntries.splice(creditIndexToDelete, 1);
         }, function failure(response) {
-
             // DO NOT delete the Credit from the Angular array if the
             // credit is not successfully deleted from the database
             console.log('Error deleting Credit with ID of ' + creditIdToDeleteFromDatabase);
@@ -193,11 +192,11 @@ function CreditsService($http) {
     };
 
     self.addNewCreditToDatabase = function (newCredit) {
-        return $http.post('http://localhost:3000/credits', newCredit);
+        return $http.post('/credits', newCredit);
     };
 
     self.deleteIdFromDatabase = function (creditIdToDeleteFromDatabase) {
-        return $http.delete('http://localhost:3000/credits/' + creditIdToDeleteFromDatabase);
+        return $http.delete('/credits/' + creditIdToDeleteFromDatabase);
     };
 }
 
