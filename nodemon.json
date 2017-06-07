@@ -1,6 +1,6 @@
 {
   "ignore": [
-    "./public/*/*.js",
-    "./client/*/*.js"
+    "./public/**/*.js",
+    "./client/**/*.js"
   ]
 }

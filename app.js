@@ -5,9 +5,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var index = require('./routes/index');
-var users = require('./routes/users');
-
 var app = express();
 
 // view engine setup
@@ -22,8 +19,38 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+// Mongoose stuff
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/budget-app');
+
+// Now that we're connected, let's save that connection to the database in a variable.
+var db = mongoose.connection;
+
+// Will log an error if db can't connect to MongoDB
+db.on('error', function(err){
+  console.log(err);
+});
+
+// Will log "database has been connected" if it successfully connects.
+db.once('open', function() {
+  console.log("database has been connected!");
+});
+
+
+// routers to be used
+var index = require('./routes/index');
 app.use('/', index);
+
+var users = require('./routes/users');
 app.use('/users', users);
+
+var credits = require('./routes/credits');
+app.use('/credits', credits);
+
+
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

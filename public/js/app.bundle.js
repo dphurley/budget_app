@@ -79,37 +79,51 @@ function CreditsController($http) {
 
     var vm = this;
 
-    vm.creditEntries = [{
-        amount: 123,
-        note: 123,
-        createdAt: 123
-    }, {
-        amount: 456,
-        note: 456,
-        createdAt: 456
-    }];
-
     /**
+     * We will run this function the first time we load our component.
      * 
-     *  NEED TO READ ALL OF THE CREDIT ENTRIES FROM THE DB WHEN PAGE LOADS
-     * 
+     * We can use an 'initialize' function to pre-load some data
+     * from the database.
      */
+    function initialize() {
+        getCreditsFromDatabase();
+    }
+    initialize();
 
+    function getCreditsFromDatabase() {
+        $http.get('/credits').then(function success(response) {
+            vm.creditEntries = response.data;
+        }, function failure(response) {
+            console.log('Error retrieving Credit Entries from database!');
+        });
+    }
+
+    // This function handles our form submission.
     vm.addCredit = function () {
 
-        // make an ajax call to save the new Credit to the database
-
-        // only push to the creditEntries array if the ajax call is successful
-
-        vm.creditEntries.push({
+        // the new Credit object will be created by binding to the form inputs
+        var newCredit = {
             amount: vm.newCreditAmount,
-            note: vm.newCreditNote,
-            createdAt: new Date()
-        });
+            note: vm.newCreditNote
+        };
 
-        resetForm();
+        // Make an ajax call to save the new Credit to the database:
+        $http.post('http://localhost:3000/credits', newCredit).then(function success(response) {
+            // only push to the creditEntries array if the ajax call is successful
+            var newCreditFromDatabase = response.data;
+            console.log(response.data);
+            vm.creditEntries.push(newCreditFromDatabase);
+            // then reset the form so we can submit more credits
+            resetForm();
+        }, function failure(response) {
+            // if the http call is not successful, log the error 
+            // DO NOT clear the form
+            // DO NOT push the new object to the array
+            console.log('Error saving new Credit to database!');
+        });
     };
 
+    // this function can be used to clear the credits form
     function resetForm() {
         vm.newCreditAmount = '';
         vm.newCreditNote = '';
@@ -33535,7 +33549,7 @@ module.exports = angular;
 /* 5 */
 /***/ (function(module, exports) {
 
-module.exports = "<div>\n\n    <h1>CREDIT PAGE</h1>\n\n    <form ng-submit=\"$ctrl.addCredit()\">\n        <div>add $<input type=\"text\" ng-model=\"$ctrl.newCreditAmount\"></div>\n        <div>NOTE: <input type=\"text\" ng-model=\"$ctrl.newCreditNote\"></div>\n        <div><input type=\"submit\" value=\"Add to Credits\"></div>\n    </form>\n\n    <h3>Total Credit</h3>\n    <h3>$515</h3>\n\n    <table>\n        <tr ng-repeat=\"creditEntry in $ctrl.creditEntries\">\n            <td>{{creditEntry.amount}}</td>\n            <td>{{creditEntry.note}}</td>\n            <td>{{creditEntry.createdAt}}</td>\n        </tr>\n    </table>\n\n</div>";
+module.exports = "<div>\n\n    <h1>CREDIT PAGE</h1>\n\n    <form ng-submit=\"$ctrl.addCredit()\">\n        <div>add $<input type=\"text\" ng-model=\"$ctrl.newCreditAmount\"></div>\n        <div>NOTE: <input type=\"text\" ng-model=\"$ctrl.newCreditNote\"></div>\n        <div><input type=\"submit\" value=\"Add to Credits\"></div>\n    </form>\n\n    <h3>Total Credit</h3>\n    <h3>$515</h3>\n\n    <table>\n        <tr ng-repeat=\"creditEntry in $ctrl.creditEntries\">\n            <td>{{ creditEntry.amount | currency }}</td>\n            <td>{{ creditEntry.note}}</td>\n            <td>{{ creditEntry.createdAt | date : 'medium' }}</td>\n        </tr>\n    </table>\n\n</div>";
 
 /***/ }),
 /* 6 */
