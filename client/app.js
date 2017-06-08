@@ -1,7 +1,8 @@
 require('angular-ui-router');
+require('angular-messages');
 const angular = require('angular');
 
-angular.module('BudgetApp', ['ui.router']).config(uiRouterSetup);
+angular.module('BudgetApp', ['ui.router', 'ngMessages']).config(uiRouterSetup);
 
 uiRouterSetup.$inject = ['$stateProvider', '$urlRouterProvider'];
 function uiRouterSetup($stateProvider, $urlRouterProvider) {
@@ -19,8 +20,21 @@ function uiRouterSetup($stateProvider, $urlRouterProvider) {
             url: '/edit_credit/:creditId',
             params: [ 'creditId' ],
             template: '<edit-credit></edit-credit>'
-        });;
+        })
+        .state('expenses', {
+            url: '/expenses',
+            template: '<expenses></expenses>'
+        })
+        .state('show_expense/:expenseId', {
+            url: '/show_expense/:expenseId',
+            params: [ 'expenseId' ],
+            template: '<show-expense></show-expense>'
+        })
+        .state('edit_expense/:expenseId', {
+            url: '/edit_expense/:expenseId',
+            params: [ 'expenseId' ],
+            template: '<edit-expense></edit-expense>'
+        });
 
     $urlRouterProvider.otherwise('/');
-
 }

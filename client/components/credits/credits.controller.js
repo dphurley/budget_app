@@ -1,6 +1,6 @@
-CreditsController.$inject = ['$http', '$state', '$stateParams', 'CreditsService'];
+CreditsController.$inject = ['$http', '$state', '$stateParams', 'CreditsService', '$scope'];
 
-function CreditsController($http, $state, $stateParams, CreditsService) {
+function CreditsController($http, $state, $stateParams, CreditsService, $scope) {
 
     let vm = this;
 
@@ -73,7 +73,6 @@ function CreditsController($http, $state, $stateParams, CreditsService) {
                     console.log('Error deleting Credit with ID of ' + creditIdToDeleteFromDatabase);
                 }
             )
-
     }
 
     vm.showCredit = function (creditId) {
@@ -84,6 +83,7 @@ function CreditsController($http, $state, $stateParams, CreditsService) {
     function resetForm() {
         vm.newCreditAmount = '';
         vm.newCreditNote = '';
+        vm.newCreditForm.$setPristine();
     }
 
 }

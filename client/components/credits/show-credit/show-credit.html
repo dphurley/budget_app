@@ -1,6 +1,11 @@
-<div>
-    <div>Amount: {{$ctrl.creditEntry.amount}}</div>
-    <div>Note: {{$ctrl.creditEntry.note}}</div>
-    <div>Created At: {{$ctrl.creditEntry.createdAt}}</div>
-    <button ng-click="$ctrl.editCreditEntry($ctrl.creditEntry._id)">Edit</button>
+<div class="container">
+    <h1>Credit</h1>
+    <div class="card">
+        <div class="card-content">
+            <h3>Amount: {{$ctrl.creditEntry.amount}}</h3>
+            <h3>Note: {{$ctrl.creditEntry.note}}</h3>
+            <h3>Created At: {{$ctrl.creditEntry.createdAt}}</h3>
+            <button class="btn" ng-click="$ctrl.editCreditEntry($ctrl.creditEntry._id)">Edit</button>
+        </div>
+    </div>
 </div>

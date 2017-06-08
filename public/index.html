@@ -7,18 +7,20 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Budget App</title>
 
-    <script src="js/app.bundle.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/css/materialize.min.css">
 </head>
 
 <body>
 
-    <nav>
-        <a ui-sref-active="active" ui-sref="credits">CREDITS</a>
-        <a ui-sref="expenses">EXPENSES</a>
+    <nav class="center-align">
+        <a class="btn" ui-sref="credits">CREDITS</a>
+        <a class="btn" appui-sref="expenses">EXPENSES</a>
     </nav>
 
     <ui-view></ui-view>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.2/js/materialize.min.js"></script>
+    <script src="js/app.bundle.js"></script>
 </body>
 
 </html>
