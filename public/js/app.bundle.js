@@ -5379,8 +5379,17 @@ function ExpensesController($http, $state, $stateParams, ExpensesService, $scope
     function resetForm() {
         vm.newExpenseAmount = '';
         vm.newExpenseNote = '';
-        vm.newExpenseForm.$setPristine();
     }
+
+    vm.totalExpenses = function () {
+        if (vm.expenseEntries) {
+            var totalExpenses = vm.expenseEntries.reduce(function (totalExpenses, expenseEntry) {
+                return totalExpenses + expenseEntry.amount;
+            }, 0);
+
+            return totalExpenses;
+        }
+    };
 }
 
 module.exports = ExpensesController;
@@ -45730,7 +45739,7 @@ module.exports = "<div class=\"container\">\n    <div class=\"card\">\n        <
 /* 109 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n\n    <h1>Expenses</h1>\n\n    <div class=\"card\">\n        <div class=\"card-content\">\n\n            <form ng-submit=\"$ctrl.addExpense()\">\n                <div>Amount (USD)<input type=\"number\" ng-model=\"$ctrl.newExpenseAmount\" required></div>\n                <div>Note: <input type=\"text\" ng-model=\"$ctrl.newExpenseNote\" required></div>\n                <div><input class=\"btn\" type=\"submit\" value=\"Add to Expenses\"></div>\n            </form>\n\n        </div>\n    </div>\n\n    <div class=\"card\">\n        <div class=\"card-content\">\n            <h3>Total Expense</h3>\n            <h3><i>$515</i></h3>\n        </div>\n    </div>\n\n    <div class=\"card\">\n        <div class=\"card-content\">\n\n            <table>\n                <tr>\n                    <th>Amount</th>\n                    <th>Note</th>\n                    <th>Date Entered</th>\n                    <th></th>\n                </tr>\n                <tr class=\"row\" ng-repeat=\"expenseEntry in $ctrl.expenseEntries\">\n                    <td>{{ expenseEntry.amount | currency }}</td>\n                    <td>{{ expenseEntry.note }}</td>\n                    <td>{{ expenseEntry.createdAt | date : 'medium' }}</td>\n                    <td><button class=\"btn\" ng-click=\"$ctrl.showExpense(expenseEntry._id)\">View</button></td>\n                    <!-- when the delete button is clicked, tell Angular what index in the array to delete -->\n                    <!-- and also what the id of the expense is so we can delete it from the database -->\n                    <td><button class=\"btn\" ng-click=\"$ctrl.deleteExpense($index, expenseEntry._id)\">Delete</button></td>\n                </tr>\n            </table>\n\n        </div>\n    </div>\n\n</div>";
+module.exports = "<div class=\"container\">\n\n    <h1>Expenses</h1>\n\n    <div class=\"card\">\n        <div class=\"card-content\">\n\n            <form ng-submit=\"$ctrl.addExpense()\">\n                <div>Amount (USD)<input type=\"number\" ng-model=\"$ctrl.newExpenseAmount\" required></div>\n                <div>Note: <input type=\"text\" ng-model=\"$ctrl.newExpenseNote\" required></div>\n                <div><input class=\"btn\" type=\"submit\" value=\"Add to Expenses\"></div>\n            </form>\n\n        </div>\n    </div>\n\n    <div class=\"card\">\n        <div class=\"card-content\">\n            <h3>Total Expenses</h3>\n            <h3><i>{{ $ctrl.totalExpenses() | currency }}</i></h3>\n        </div>\n    </div>\n\n    <div class=\"card\">\n        <div class=\"card-content\">\n\n            <table>\n                <tr>\n                    <th>Amount</th>\n                    <th>Note</th>\n                    <th>Date Entered</th>\n                    <th></th>\n                </tr>\n                <tr class=\"row\" ng-repeat=\"expenseEntry in $ctrl.expenseEntries\">\n                    <td>{{ expenseEntry.amount | currency }}</td>\n                    <td>{{ expenseEntry.note }}</td>\n                    <td>{{ expenseEntry.createdAt | date : 'medium' }}</td>\n                    <td><button class=\"btn\" ng-click=\"$ctrl.showExpense(expenseEntry._id)\">View</button></td>\n                    <!-- when the delete button is clicked, tell Angular what index in the array to delete -->\n                    <!-- and also what the id of the expense is so we can delete it from the database -->\n                    <td><button class=\"btn\" ng-click=\"$ctrl.deleteExpense($index, expenseEntry._id)\">Delete</button></td>\n                </tr>\n            </table>\n\n        </div>\n    </div>\n\n</div>";
 
 /***/ }),
 /* 110 */

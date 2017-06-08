@@ -83,7 +83,16 @@ function ExpensesController($http, $state, $stateParams, ExpensesService, $scope
     function resetForm() {
         vm.newExpenseAmount = '';
         vm.newExpenseNote = '';
-        vm.newExpenseForm.$setPristine();
+    }
+
+    vm.totalExpenses = function () {
+        if (vm.expenseEntries) {
+            let totalExpenses = vm.expenseEntries.reduce(function (totalExpenses, expenseEntry) {
+                return totalExpenses + expenseEntry.amount;
+            }, 0)
+
+            return totalExpenses;
+        }
     }
 
 }
