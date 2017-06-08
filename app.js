@@ -48,7 +48,8 @@ app.use('/users', users);
 var credits = require('./routes/credits');
 app.use('/credits', credits);
 
-
+var expenses = require('./routes/expenses');
+app.use('/expenses', expenses);
 
 
 
