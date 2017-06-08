@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-    "heroku-postbuild": "node_modules/.bin/webpack"
+    "postinstall": "node_modules/.bin/webpack"
   },
   "dependencies": {
     "angular": "^1.6.4",
