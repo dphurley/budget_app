@@ -19,10 +19,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Add local environment config
+require('dotenv').config();
 
 // Mongoose stuff
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/budget-app');
+mongoose.connect(process.env.MONGODB_URI);
 
 // Now that we're connected, let's save that connection to the database in a variable.
 var db = mongoose.connection;
