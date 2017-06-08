@@ -83,9 +83,17 @@ function CreditsController($http, $state, $stateParams, CreditsService, $scope) 
     function resetForm() {
         vm.newCreditAmount = '';
         vm.newCreditNote = '';
-        vm.newCreditForm.$setPristine();
     }
 
+    vm.totalCredits = function () {
+        if (vm.creditEntries) {
+            let totalCredits = vm.creditEntries.reduce(function (totalCredits, creditEntry) {
+                return totalCredits + creditEntry.amount;
+            }, 0)
+
+            return totalCredits;
+        }
+    }
 }
 
 module.exports = CreditsController;

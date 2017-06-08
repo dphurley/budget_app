@@ -5190,8 +5190,17 @@ function CreditsController($http, $state, $stateParams, CreditsService, $scope) 
     function resetForm() {
         vm.newCreditAmount = '';
         vm.newCreditNote = '';
-        vm.newCreditForm.$setPristine();
     }
+
+    vm.totalCredits = function () {
+        if (vm.creditEntries) {
+            var totalCredits = vm.creditEntries.reduce(function (totalCredits, creditEntry) {
+                return totalCredits + creditEntry.amount;
+            }, 0);
+
+            return totalCredits;
+        }
+    };
 }
 
 module.exports = CreditsController;
@@ -45715,7 +45724,7 @@ $provide.value("$locale", {
 /* 105 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\n\n    <h1>Credits</h1>\n\n    <div class=\"card\">\n        <div class=\"card-content\">\n\n            <form ng-submit=\"$ctrl.addCredit()\">\n                <div>Amount (USD)<input type=\"number\" ng-model=\"$ctrl.newCreditAmount\" required></div>\n                <div>Note: <input type=\"text\" ng-model=\"$ctrl.newCreditNote\" required></div>\n                <div><input class=\"btn\" type=\"submit\" value=\"Add to Credits\"></div>\n            </form>\n\n        </div>\n    </div>\n\n    <div class=\"card\">\n        <div class=\"card-content\">\n            <h3>Total Credit</h3>\n            <h3><i>$515</i></h3>\n        </div>\n    </div>\n\n    <div class=\"card\">\n        <div class=\"card-content\">\n\n            <table>\n                <tr>\n                    <th>Amount</th>\n                    <th>Note</th>\n                    <th>Date Entered</th>\n                    <th></th>\n                </tr>\n                <tr class=\"row\" ng-repeat=\"creditEntry in $ctrl.creditEntries\">\n                    <td>{{ creditEntry.amount | currency }}</td>\n                    <td>{{ creditEntry.note }}</td>\n                    <td>{{ creditEntry.createdAt | date : 'medium' }}</td>\n                    <td><button class=\"btn\" ng-click=\"$ctrl.showCredit(creditEntry._id)\">View</button></td>\n                    <!-- when the delete button is clicked, tell Angular what index in the array to delete -->\n                    <!-- and also what the id of the credit is so we can delete it from the database -->\n                    <td><button class=\"btn\" ng-click=\"$ctrl.deleteCredit($index, creditEntry._id)\">Delete</button></td>\n                </tr>\n            </table>\n\n        </div>\n    </div>\n\n</div>";
+module.exports = "<div class=\"container\">\n\n    <h1>Credits</h1>\n\n    <div class=\"card\">\n        <div class=\"card-content\">\n\n            <form ng-submit=\"$ctrl.addCredit()\">\n                <div>Amount (USD)<input type=\"number\" ng-model=\"$ctrl.newCreditAmount\" required></div>\n                <div>Note: <input type=\"text\" ng-model=\"$ctrl.newCreditNote\" required></div>\n                <div><input class=\"btn\" type=\"submit\" value=\"Add to Credits\"></div>\n            </form>\n\n        </div>\n    </div>\n\n    <div class=\"card\">\n        <div class=\"card-content\">\n            <h3>Total Credits</h3>\n            <h3><i>{{ $ctrl.totalCredits() | currency }}</i></h3>\n        </div>\n    </div>\n\n    <div class=\"card\">\n        <div class=\"card-content\">\n\n            <table>\n                <tr>\n                    <th>Amount</th>\n                    <th>Note</th>\n                    <th>Date Entered</th>\n                    <th></th>\n                </tr>\n                <tr class=\"row\" ng-repeat=\"creditEntry in $ctrl.creditEntries\">\n                    <td>{{ creditEntry.amount | currency }}</td>\n                    <td>{{ creditEntry.note }}</td>\n                    <td>{{ creditEntry.createdAt | date : 'medium' }}</td>\n                    <td><button class=\"btn\" ng-click=\"$ctrl.showCredit(creditEntry._id)\">View</button></td>\n                    <!-- when the delete button is clicked, tell Angular what index in the array to delete -->\n                    <!-- and also what the id of the credit is so we can delete it from the database -->\n                    <td><button class=\"btn\" ng-click=\"$ctrl.deleteCredit($index, creditEntry._id)\">Delete</button></td>\n                </tr>\n            </table>\n\n        </div>\n    </div>\n\n</div>";
 
 /***/ }),
 /* 106 */
